@@ -13,6 +13,9 @@
                     <small>{{ Auth::user()->email }}</small>
                 </p>
                 <a href="{{ route('profile', Auth::user()->id) }}" class="btn btn-primary btn-sm">My Profile</a>
+                @if(Auth::user()->type == 'admin')
+                <a href="{{ route('admin') }}" class="btn btn-dark btn-sm mt-2">Admin Dashboard</a>
+                @endif
                 <hr>
                 <button onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                     class="btn btn-light btn-sm">← Logout</button>

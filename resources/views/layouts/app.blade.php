@@ -20,9 +20,12 @@
 
     </style>
 
-    <!-- Fonts -->
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <!-- Datatable -->
+    <link href="https://cdn.jsdelivr.net/npm/vanilla-datatables@latest/dist/vanilla-dataTables.min.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-datatables@latest/dist/vanilla-dataTables.min.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -69,13 +72,31 @@
             @yield('content')
         </main>
 
-        <footer class="bg-dark text-center p-5">
+        <footer class="bg-dark text-center p-5 fixed-bottom" style="z-index: -1;">
             <h4 class="text-white fw-bold">{{ config('app.name') }}</h4>
             <p class="text-white">©2023 | Property of <strong>WD29</strong></p>
         </footer>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
+    </script>
+    <script>
+    const dataTable = new DataTable("#usermanagement");
+
+    const editUserModal = new bootstrap.Modal('#editusermodal', {
+        keyboard: false
+    });
+    
+    function showUser(user_id){
+        fetch('{{ url('/users/') }}/' + user_id)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('edituser_email').value = data.email;
+            document.getElementById('edituser_name').value = data.name;
+            document.getElementById('edituser_id').value = data.id;
+            editUserModal.show();
+        })
+    }
     </script>
 </body>
 

@@ -5,6 +5,8 @@ use App\Http\Controllers\TwatController;
 use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReactionController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,3 +39,47 @@ Route::get('/reaction/{id}', [ReactionController::class, 'delete'])->name('react
 // Reply routes
 Route::post('/createreply', [ReplyController::class, 'create'])->name('createreply');
 Route::get('/deletereply/{id}', [ReplyController::class, 'delete'])->name('deletereply');
+
+
+// --- Admin Routes --- //
+Route::get('/admin', function () {
+    if(Auth::user()->type == 'admin'){
+        return view('admin')
+        ->with('users', App\Models\User::all())
+        ->with('totaltwats', App\Models\Twat::count())
+        ->with('totalreplies', App\Models\Reply::count());
+    }else{
+        return redirect()->route('login');
+    }
+})->name('admin');
+
+Route::get('/users/{id}', function($id){
+    $user = App\Models\User::find($id);
+    return response()->json($user);
+});
+
+Route::post('/updateuser', function(Request $request){
+    $user = App\Models\User::find($request->id);
+    $user->name = $request->name;
+    $user->email = $request->email;
+    if($request->password != ""){
+        $user->password = Hash::make($request->password);
+    }
+    $user->save();
+
+    return redirect()->route('admin')->with('success', $user->name.' has been updated!');
+})->name('updateuser');
+
+Route::get('/deleteuser/{id}', function($id){
+    if(Auth::user()->type == 'admin'){
+        $user = App\Models\User::find($id);
+        if($user->type == 'admin'){
+            return redirect()->route('admin')->with('success', 'Selected user is an admin!');
+        }else{
+            $user->delete();
+            return redirect()->route('admin')->with('success', 'User has been deleted!');
+        }
+    }else{
+        return redirect()->route('login');
+    }
+})->name('deleteuser');
