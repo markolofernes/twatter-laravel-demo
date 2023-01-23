@@ -67,6 +67,26 @@
                                 {{ $twat->content}}
                             </p>
                             <small class="text-muted float-end">{{ $twat->created_at->diffForHumans() }}</small>
+                            <hr class="mt-5">
+                            <!-- Replies -->
+                            @foreach($twat->replies as $reply)
+                            <div class="card bg-light pt-2 px-2 mb-2">
+                                <small>
+                                    <p>
+                                        <a href="{{ route('profile', $reply->user->id) }}" style="text-decoration:none">{{ $reply->user->name }}</a>
+                                        <span class="float-end text-muted"><small>{{ $reply->created_at->diffForHumans() }}</small></span>
+                                        <br>{{ $reply->content }}
+                                    </p>
+                                </small>
+                            </div>
+                            @endforeach
+                            <form action="{{ route('createreply') }}" method="POST" class="mt-2">
+                                @csrf
+                                <input type="text" class="form-control" placeholder="💬 Add a reply..." name="content" required>
+                                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                <input type="hidden" name="twat_id" value="{{ $twat->id }}">
+                                <button type="submit" class="d-none"></button>
+                            </form>
                         </div>
                     </div>
                     @endforeach

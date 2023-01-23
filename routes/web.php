@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TwatController;
+use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\HomeController;
 
 /*
@@ -27,3 +28,7 @@ Route::get('/profile/{id}', [HomeController::class, 'profile'])->name('profile')
 // Twat routes
 Route::post('/createtwat', [TwatController::class, 'create'])->name('createtwat');
 Route::get('/deletetwat/{id}', [TwatController::class, 'delete'])->name('deletetwat');
+
+// Reply routes
+
+Route::post('/createreply', [ReplyController::class, 'create'])->name('createreply');

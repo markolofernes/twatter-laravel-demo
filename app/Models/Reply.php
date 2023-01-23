@@ -5,19 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Twat extends Model
+class Reply extends Model
 {
     use HasFactory;
 
-    protected $table = 'twats';
+    protected $table = "replies";
 
     protected $fillable = [
         'content',
         'user_id',
+        'twat_id',
     ];
 
-    public function replies(){
-        return $this->hasMany(Reply::class);
+    public function twat(){
+        return $this->belongsTo(Twat::class);
     }
 
     public function user(){
