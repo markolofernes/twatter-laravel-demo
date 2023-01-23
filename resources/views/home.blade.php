@@ -71,38 +71,14 @@
                                 <div class="d-flex">
                                     <form action="{{ route('reaction.create') }}" method="POST" class="mt-2">
                                         @csrf
-                                        <input type="hidden" name="reaction" value="like">
+                                        <input type="hidden" name="reaction" id="reaction">
                                         <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                         <input type="hidden" name="twat_id" value="{{ $twat->id }}">
-                                        <button type="submit" class="btn-light btn btn-sm rounded-pill">👍🏻</button>
-                                    </form>
-                                    <form action="{{ route('reaction.create') }}" method="POST" class="mt-2">
-                                        @csrf
-                                        <input type="hidden" name="reaction" value="heart">
-                                        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                        <input type="hidden" name="twat_id" value="{{ $twat->id }}">
-                                        <button type="submit" class="btn-light btn btn-sm rounded-pill">💙</button>
-                                    </form>
-                                    <form action="{{ route('reaction.create') }}" method="POST" class="mt-2">
-                                        @csrf
-                                        <input type="hidden" name="reaction" value="laugh">
-                                        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                        <input type="hidden" name="twat_id" value="{{ $twat->id }}">
-                                        <button type="submit" class="btn-light btn btn-sm rounded-pill">😂</button>
-                                    </form>
-                                    <form action="{{ route('reaction.create') }}" method="POST" class="mt-2">
-                                        @csrf
-                                        <input type="hidden" name="reaction" value="angry">
-                                        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                        <input type="hidden" name="twat_id" value="{{ $twat->id }}">
-                                        <button type="submit" class="btn-light btn btn-sm rounded-pill">😠</button>
-                                    </form>
-                                    <form action="{{ route('reaction.create') }}" method="POST" class="mt-2">
-                                        @csrf
-                                        <input type="hidden" name="reaction" value="dislike">
-                                        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                        <input type="hidden" name="twat_id" value="{{ $twat->id }}">
-                                        <button type="submit" class="btn-light btn btn-sm rounded-pill">👎🏻</button>
+                                        <button type="submit" class="btn-light btn btn-sm rounded-pill" onclick="document.getElementById('reaction').value='like'">👍🏻</button>
+                                        <button type="submit" class="btn-light btn btn-sm rounded-pill" onclick="document.getElementById('reaction').value='heart'">💙</button>
+                                        <button type="submit" class="btn-light btn btn-sm rounded-pill" onclick="document.getElementById('reaction').value='laugh'">😂</button>
+                                        <button type="submit" class="btn-light btn btn-sm rounded-pill" onclick="document.getElementById('reaction').value='angry'">😠</button>
+                                        <button type="submit" class="btn-light btn btn-sm rounded-pill" onclick="document.getElementById('reaction').value='dislike'">👎🏻</button>
                                     </form>
                                 </div>
                             @endif
@@ -135,7 +111,7 @@
                             <hr>
                             <!-- Replies -->
                             @foreach($twat->replies as $reply)
-                            <div class="card bg-light pt-2 px-2 mb-2">
+                            <div class="card bg-light py-2 px-2 mb-2">
                                 <small>
                                     <div class="d-flex justify-content-between">
                                         <a href="{{ route('profile', $reply->user->id) }}" style="text-decoration:none">{{ $reply->user->name }}</a>
