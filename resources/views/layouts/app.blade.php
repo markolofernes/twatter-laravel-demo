@@ -11,8 +11,11 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <style>
         body {
-            background-image: url("https://w0.peakpx.com/wallpaper/239/25/HD-wallpaper-abstract-design-minimal-abstract-blue-white-dark-blue-design-flat-lines-modern-simple.jpg");
-            object-fit:cover;
+            background: url("https://w0.peakpx.com/wallpaper/239/25/HD-wallpaper-abstract-design-minimal-abstract-blue-white-dark-blue-design-flat-lines-modern-simple.jpg") no-repeat center center; 
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
         }
 
     </style>
