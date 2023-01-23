@@ -63,30 +63,93 @@
                                 @endif
                                 <small class="text-muted float-end mx-3 fw-normal">⏲ {{ $twat->created_at->diffForHumans() }}</small>
                             </h6>
-                            
                             <p>
                                 {{ $twat->content }}
                             </p>
                             <!-- Reactions -->
-                            <button class="btn-light btn btn-sm rounded-pill">👍🏻</button>
-                            <button class="btn-light btn btn-sm rounded-pill">💙</button>
-                            <button class="btn-light btn btn-sm rounded-pill">😂</button>
-                            <button class="btn-light btn btn-sm rounded-pill">😠</button>
-                            <button class="btn-light btn btn-sm rounded-pill">👎🏻</button>
+                            @if(!Auth::user()->hasReaction($twat->id))
+                                <div class="d-flex">
+                                    <form action="{{ route('reaction.create') }}" method="POST" class="mt-2">
+                                        @csrf
+                                        <input type="hidden" name="reaction" value="like">
+                                        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                        <input type="hidden" name="twat_id" value="{{ $twat->id }}">
+                                        <button type="submit" class="btn-light btn btn-sm rounded-pill">👍🏻</button>
+                                    </form>
+                                    <form action="{{ route('reaction.create') }}" method="POST" class="mt-2">
+                                        @csrf
+                                        <input type="hidden" name="reaction" value="heart">
+                                        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                        <input type="hidden" name="twat_id" value="{{ $twat->id }}">
+                                        <button type="submit" class="btn-light btn btn-sm rounded-pill">💙</button>
+                                    </form>
+                                    <form action="{{ route('reaction.create') }}" method="POST" class="mt-2">
+                                        @csrf
+                                        <input type="hidden" name="reaction" value="laugh">
+                                        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                        <input type="hidden" name="twat_id" value="{{ $twat->id }}">
+                                        <button type="submit" class="btn-light btn btn-sm rounded-pill">😂</button>
+                                    </form>
+                                    <form action="{{ route('reaction.create') }}" method="POST" class="mt-2">
+                                        @csrf
+                                        <input type="hidden" name="reaction" value="angry">
+                                        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                        <input type="hidden" name="twat_id" value="{{ $twat->id }}">
+                                        <button type="submit" class="btn-light btn btn-sm rounded-pill">😠</button>
+                                    </form>
+                                    <form action="{{ route('reaction.create') }}" method="POST" class="mt-2">
+                                        @csrf
+                                        <input type="hidden" name="reaction" value="dislike">
+                                        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                        <input type="hidden" name="twat_id" value="{{ $twat->id }}">
+                                        <button type="submit" class="btn-light btn btn-sm rounded-pill">👎🏻</button>
+                                    </form>
+                                </div>
+                            @endif
                             <p>
-                                <small><small><span class="badge bg-light text-dark">2 👍🏻</span></small></small>
-                                <small><small><span class="badge bg-light text-dark">4 💙</span></small></small>
+                                {{-- Total like --}}
+                                @if($twat->countReaction('like'))
+                                <small><small><span class="badge bg-light text-dark">{{$twat->countReaction('like')}} 👍🏻</span></small></small>
+                                @endif
+
+                                {{-- Total heart --}}
+                                @if($twat->countReaction('heart'))
+                                <small><small><span class="badge bg-light text-dark">{{$twat->countReaction('heart')}} 💙</span></small></small>
+                                @endif
+
+                                {{-- Total laugh --}}
+                                @if($twat->countReaction('laugh'))
+                                <small><small><span class="badge bg-light text-dark">{{$twat->countReaction('laugh')}} 😂</span></small></small>
+                                @endif
+
+                                {{-- Total angry --}}
+                                @if($twat->countReaction('angry'))
+                                <small><small><span class="badge bg-light text-dark">{{$twat->countReaction('angry')}} 😠</span></small></small>
+                                @endif
+
+                                {{-- Total dislike --}}
+                                @if($twat->countReaction('dislike'))
+                                <small><small><span class="badge bg-light text-dark">{{$twat->countReaction('dislike')}} 👎🏻</span></small></small>
+                                @endif
                             </p>
                             <hr>
                             <!-- Replies -->
                             @foreach($twat->replies as $reply)
                             <div class="card bg-light pt-2 px-2 mb-2">
                                 <small>
-                                    <p>
+                                    <div class="d-flex justify-content-between">
                                         <a href="{{ route('profile', $reply->user->id) }}" style="text-decoration:none">{{ $reply->user->name }}</a>
-                                        <span class="float-end text-muted"><small>⏲ {{ $reply->created_at->diffForHumans() }}</small></span>
-                                        <br>{{ $reply->content }}
-                                    </p>
+                                        <div>
+                                            <span class="text-muted"><small>⏲ {{ $reply->created_at->diffForHumans() }}</small></span>
+                                            @if($reply->user->id == Auth::user()->id)
+                                            <a href="#" class="dropdown-toggle" style="text-decoration:none" data-bs-toggle="dropdown"></a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="{{ route('deletereply', $reply->id) }}">Delete</a></li>
+                                            </ul>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    {{ $reply->content }}
                                 </small>
                             </div>
                             @endforeach
