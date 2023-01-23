@@ -61,20 +61,30 @@
                                     <li><a class="dropdown-item" href="{{ route('deletetwat', $twat->id) }}">Delete</a></li>
                                 </ul>
                                 @endif
+                                <small class="text-muted float-end mx-3 fw-normal">⏲ {{ $twat->created_at->diffForHumans() }}</small>
                             </h6>
                             
                             <p>
-                                {{ $twat->content}}
+                                {{ $twat->content }}
                             </p>
-                            <small class="text-muted float-end">{{ $twat->created_at->diffForHumans() }}</small>
-                            <hr class="mt-5">
+                            <!-- Reactions -->
+                            <button class="btn-light btn btn-sm rounded-pill">👍🏻</button>
+                            <button class="btn-light btn btn-sm rounded-pill">💙</button>
+                            <button class="btn-light btn btn-sm rounded-pill">😂</button>
+                            <button class="btn-light btn btn-sm rounded-pill">😠</button>
+                            <button class="btn-light btn btn-sm rounded-pill">👎🏻</button>
+                            <p>
+                                <small><small><span class="badge bg-light text-dark">2 👍🏻</span></small></small>
+                                <small><small><span class="badge bg-light text-dark">4 💙</span></small></small>
+                            </p>
+                            <hr>
                             <!-- Replies -->
                             @foreach($twat->replies as $reply)
                             <div class="card bg-light pt-2 px-2 mb-2">
                                 <small>
                                     <p>
                                         <a href="{{ route('profile', $reply->user->id) }}" style="text-decoration:none">{{ $reply->user->name }}</a>
-                                        <span class="float-end text-muted"><small>{{ $reply->created_at->diffForHumans() }}</small></span>
+                                        <span class="float-end text-muted"><small>⏲ {{ $reply->created_at->diffForHumans() }}</small></span>
                                         <br>{{ $reply->content }}
                                     </p>
                                 </small>
