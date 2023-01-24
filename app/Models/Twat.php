@@ -14,6 +14,7 @@ class Twat extends Model
     protected $fillable = [
         'content',
         'user_id',
+        'image_path',
     ];
 
     public function reactions(){

@@ -34,12 +34,15 @@
             <!-- Write Twat -->
             <div class="card p-3 mb-3">
                 <p class="fw-bold">Write a Twat</p>
-                <form action="{{ route('createtwat') }}" method="POST">
+                <form action="{{ route('createtwat') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
-                        <div class="col-10">
+                        <div class="col-10" id="imageArea">
                             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                             <input class="form-control" placeholder="Say anything you want..." type="text" name="content">
+                            
+                            <input class="form-control d-none" type="file" name="image" id="image" accept=".gif,.jpg,.jpeg,.png" onchange="imageUpload(event);">
+                            <label class="mt-2 bg-primary text-white rounded px-2 py-1 fw-bold" for="image" style="cursor: pointer;" id="imageUploadLabel"><small>⬆ Add a photo...</small></label>
                         </div>
                         <div class="col-2">
                             <button type="submit" class="btn btn-primary">
@@ -69,6 +72,9 @@
                             <p>
                                 {{ $twat->content }}
                             </p>
+                            @if($twat->image_path != NULL)
+                            <img src="{{ Storage::url('public/images/'.$twat->image_path) }}" class="img-fluid">
+                            @endif
                             <!-- Reactions -->
                             @if(!Auth::user()->hasReaction($twat->id))
                                 <div class="d-flex">

@@ -97,6 +97,17 @@
             editUserModal.show();
         })
     }
+
+    function imageUpload(event){
+        let imageInput = document.getElementById('image');
+        document.getElementById("imageUploadLabel").remove();
+
+        let img = new Image();
+        img.src = URL.createObjectURL(event.target.files[0]);
+        img.classList.add("img-thumbnail");
+        img.classList.add("mt-2");
+        document.getElementById('imageArea').appendChild(img);
+    }
     </script>
 </body>
 
